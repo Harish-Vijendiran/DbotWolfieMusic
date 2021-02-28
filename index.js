@@ -5,7 +5,7 @@ const ytdl = require('ytdl-core');
 const { YTSearcher } = require('ytsearcher');
 //setting the youtube API
 const searcher = new YTSearcher({
-    key:"AIzaSyBgtPlb2KXZA7UGc8nJKMastGkdwqh9o-w",
+    key: process.env.youtube_api,
     revealed: true 
 });
 //getting client from discord
@@ -319,4 +319,4 @@ client.on("message", async(message) =>{
     }
 })
 //using token to login to the event
-client.login("ODE0Njk3Njc3OTYyODcwODA2.YDhoVg.fsgACjmWtDHQycQytKfTW6Du_Nw")
+client.login(process.env.token)
