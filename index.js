@@ -11,7 +11,7 @@ const searcher = new YTSearcher({
 //getting client from discord
 const client = new Discord.Client();
 
-
+const memberCounter = require('./counters/member-counter');
 const fs = require('fs');
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter( file => file.endsWith('.js'));
@@ -24,6 +24,7 @@ const queue = new Map();
 //starting the event
 client.on("ready", () =>{       
     console.log("I'm Online!");
+    memberCounter(client);
 })
 //getting the message from user
 client.on("message", async(message) =>{
@@ -32,7 +33,7 @@ client.on("message", async(message) =>{
     //getting the specific server id using map
     const serverQueue = queue.get(message.guild.id); 
     //excluding the first args before space
-    const args = message.content.slice(prefix.length).trim().split(/ +/g)
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
     //converting uppercase to lowercase
     const command = args.shift().toLowerCase();
     //command for play, skip, stop, pause, resume using switch
