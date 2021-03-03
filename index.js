@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 //ytdl for downloading the youtube video
 const ytdl = require('ytdl-core');
 const prefix = '#';
-const radioLive1 = 'https://www.youtube.com/watch?v=36YnV9STBqc';
+const radioLive = 'https://www.youtube.com/watch?v=36YnV9STBqc';
 //ytsearching for searching in youtube
 const { YTSearcher } = require('ytsearcher');
 //setting the youtube API
@@ -56,8 +56,8 @@ client.on("message", async(message) =>{
         case 'resume':
             resume(serverQueue);
             break;
-        case 'radio1':
-            radio1(serverQueue);
+        case 'radio':
+            radio(message, serverQueue);
             break;
     }
     //creating a function to
@@ -323,36 +323,15 @@ client.on("message", async(message) =>{
             }
         });
     }
-    async function radio1(guild, radios){
-       //getting the server id and setting it to serverQueue
-       const serverQueue = queue.get(guild.id);
-       //if the song is not playing then the bot leave and delete server id info
-       if(!radios){
-           serverQueue.vchannel.leave();
-           queue.delete(guild.id);
-           return;
-       }
-       //playing music
-       const dispatcher = serverQueue.connection
-           .play(ytdl(radioLive1))
-           //if song finish it will play next       
-           serverQueue.txtchannel.send({embed: {
-               color: 3447003,
-               author: {
-                   name: '🐺 ▶️Now Playing 🐺',
-               },
-               title: `${radios.title}`,
-               url: `${radios.url}`,
-               fields: [{
-                   name: "Requested by:",
-                   value: `${serverQueue.songs[0].user}`,
-                 }]
-                }
-           }) 
-
+    async function radio(){
+        let channel = client.channels.cache.get(radioChannel) || await client.channels.fetch(radioChannel)
+        if(!channel) return;
+        const connection = await channel.join();
+        connection.play(ytdl(radioLive))
     }
+    
      if(command == 'help'){
-        client.commands.get('help').execute(message, args, Discord );
+        client.commands.get('help').execute(message, args, Discord )
     }
 })
 //using token to login to the event
