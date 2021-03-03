@@ -2,9 +2,10 @@ const Discord = require('discord.js');
 //ytdl for downloading the youtube video
 const ytdl = require('ytdl-core');
 const prefix = '#';
+/*
 const radioLive = 'https://www.youtube.com/watch?v=36YnV9STBqc';
 const radioChannel = radio_c;
-const radioServer = radio_s;
+const radioServer = radio_s;*/
 //ytsearching for searching in youtube
 const { YTSearcher } = require('ytsearcher');
 //setting the youtube API
@@ -325,7 +326,7 @@ client.on("message", async(message) =>{
             }
         });
     }
-    async function radio(){
+    /*async function radio(){
         let rchannel = client.channels.cache.get(radioChannel) || await client.channels.fetch(radioChannel)
         if(!rchannel) return;
         const connection = await rchannel.join();
@@ -335,7 +336,7 @@ client.on("message", async(message) =>{
         let rchannel = client.channels.cache.get(radioChannel) || await client.channels.fetch(radioChannel)
         const connection = await rchannel.join();
         connection.play(ytdl(radioLive))
-    }
+    }*/
     
      if(command == 'help'){
         client.commands.get('help').execute(message, args, Discord )
