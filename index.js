@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 //ytdl for downloading the youtube video
 const ytdl = require('ytdl-core');
 const prefix = '#';
+const radioLive1 = 'https://www.youtube.com/watch?v=36YnV9STBqc';
 //ytsearching for searching in youtube
 const { YTSearcher } = require('ytsearcher');
 //setting the youtube API
@@ -55,6 +56,9 @@ client.on("message", async(message) =>{
         case 'resume':
             resume(serverQueue);
             break;
+        case 'radio1':
+            radio1(serverQueue);
+            break;
     }
     //creating a function to
     async function execute(message, serverQueue){
@@ -74,6 +78,10 @@ client.on("message", async(message) =>{
             url: songInfo.videoDetails.video_url,
             user: message.member.displayName.toString(),
             duriation: songInfo.videoDetails.lengthSeconds,
+        };
+        let radios = {
+            title: songInfo.videoDetails.title,
+            url: songInfo.videoDetails.video_url,
         };
         //if the bot is in our voice channel if not it will join
         if(!serverQueue){
@@ -315,8 +323,35 @@ client.on("message", async(message) =>{
             }
         });
     }
+    async function radio1(guild, radios){
+       //getting the server id and setting it to serverQueue
+       const serverQueue = queue.get(guild.id);
+       //if the song is not playing then the bot leave and delete server id info
+       if(!radios){
+           serverQueue.vchannel.leave();
+           queue.delete(guild.id);
+           return;
+       }
+       //playing music
+       const dispatcher = serverQueue.connection
+           .play(ytdl(radioLive1))
+           //if song finish it will play next       
+           serverQueue.txtchannel.send({embed: {
+               color: 3447003,
+               author: {
+                   name: '🐺 ▶️Now Playing 🐺',
+               },
+               title: `${radios.title}`,
+               url: `${radios.url}`,
+               fields: [{
+                   name: "Requested by:",
+                   value: `${serverQueue.songs[0].user}`,
+                 }]
+                }
+           }) 
 
-    if(command == 'help'){
+    }
+     if(command == 'help'){
         client.commands.get('help').execute(message, args, Discord );
     }
 })
