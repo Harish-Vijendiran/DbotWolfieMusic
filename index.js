@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 //ytdl for downloading the youtube video
 const ytdl = require('ytdl-core');
+const prefix = '#';
 //ytsearching for searching in youtube
 const { YTSearcher } = require('ytsearcher');
 //setting the youtube API
@@ -28,8 +29,8 @@ client.on("ready", () =>{
 })
 //getting the message from user
 client.on("message", async(message) =>{
+    if(!message.content.startsWith(prefix)  || message.author.bot) return;
     //setting the prefix
-    const prefix = '#';
     //getting the specific server id using map
     const serverQueue = queue.get(message.guild.id); 
     //excluding the first args before space
